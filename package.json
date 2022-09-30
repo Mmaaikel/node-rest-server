@@ -28,7 +28,7 @@
 		"url": "git@github.com:nishant-labs/node-rest-server.git"
 	},
 	"files": [
-		"lib"
+		"lib/*"
 	],
 	"keywords": [
 		"node rest",
