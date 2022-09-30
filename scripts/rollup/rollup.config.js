@@ -20,6 +20,11 @@ export default {
 			format: 'esm',
 			exports: 'named',
 		},
+		{
+			file: path.join(process.cwd(), pkg.module),
+			format: 'es',
+			exports: 'named',
+		},
 	],
 	external: isExternal,
 	plugins: [
