@@ -11,19 +11,9 @@ export default {
 	input: path.join(process.cwd(), 'src/index.js'),
 	output: [
 		{
-			file: path.join(process.cwd(), pkg.main),
-			format: 'cjs',
-			exports: 'named',
-		},
-		//{
-		//	file: path.join(process.cwd(), pkg.module),
-		//	format: 'esm',
-		//	exports: 'named',
-		//},
-		{
 			file: path.join(process.cwd(), pkg.module),
 			format: 'es',
-			//exports: 'named',
+			exports: 'named',
 		},
 	],
 	external: isExternal,
