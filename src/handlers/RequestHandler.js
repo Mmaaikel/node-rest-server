@@ -8,6 +8,7 @@ export const getRequestData = (request) => ({
 	getHeader: request.get,
 	headers: request.headers,
 	method: request.method,
+	clientIp: request.clientIp,
 });
 
 export const getFilterData = (response) => ({

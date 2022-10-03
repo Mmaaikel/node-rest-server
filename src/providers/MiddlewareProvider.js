@@ -1,6 +1,7 @@
 import { logger } from '../utils/Logger';
 import { getRequestData } from '../handlers/RequestHandler';
 import { errorHandler } from '../utils/ErrorUtils';
+import requestIp from 'request-ip';
 
 export default class MiddlewareProvider {
 	static registerRequestLogger(app) {
@@ -12,6 +13,11 @@ export default class MiddlewareProvider {
 			logger.info('Request body : ', JSON.stringify(data.body));
 			next();
 		});
+	}
+
+	static registerIpMiddleware(app) {
+		logger.debug('Registering ip middleware');
+		app.use(requestIp.mw());
 	}
 
 	static registerFilters(app, serverConfig) {

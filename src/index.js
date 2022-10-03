@@ -28,9 +28,20 @@ const NodeRestServer = (routeConfig, serverConfig = {}) => {
 
 		logger.debug('Applying global middlewares');
 		MiddlewareProvider.registerRequestLogger(app);
+		MiddlewareProvider.registerIpMiddleware(app);
 		MiddlewareProvider.registerFilters(app, serverConfig);
 		MiddlewareProvider.registerStatusEndpoint(app);
 		const controllerOptions = getControllerOptions(serverConfig);
+
+		logger.debug('Applying custom global middlewares');
+		const customMiddleWares = serverConfig?.middlewares ?? [];
+		if (customMiddleWares.length > 0) {
+			for (let customMiddleware in customMiddleWares) {
+				if (typeof customMiddleware === 'function') {
+					app.use(customMiddleware());
+				}
+			}
+		}
 
 		Object.keys(routeConfig).forEach((endpoint) => {
 			const endpointHandlerConfigs = routeConfig[endpoint];
