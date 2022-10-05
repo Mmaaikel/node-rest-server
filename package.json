@@ -1,5 +1,5 @@
 {
-	"name": "node-rest-server",
+	"name": "node-rest-server-2",
 	"version": "3.2.1",
 	"description": "Configurable node rest server",
 	"main": "lib/index.js",
