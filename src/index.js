@@ -16,26 +16,15 @@ const registerMethod = (app, endpoint, endpointHandlerConfigItem, controllerOpti
 	}
 };
 
-const NodeRestServer = (routeConfig, serverConfig = {}) => {
+const NodeRestServer = async (app, routeConfig, serverConfig = {}) => {
 	try {
-		const usePhusionPassengerListen = serverConfig?.passenger === true;
-
-		// Plesk fix
-		const hasPhusionPassenger = usePhusionPassengerListen && typeof PhusionPassenger != 'undefined';
-		if (hasPhusionPassenger) {
-			PhusionPassenger.configure({ autoInstall: false });
-
-			// Remove port from server config
-			if (typeof serverConfig.port !== 'undefined') {
-				delete serverConfig.port;
-			}
-		}
-
 		validateServerSettings(serverConfig);
+
 		logger.info('Loading resources and starting server', serverConfig);
-		const app = express();
+
 		logger.debug('initializing application logger with', JSON.stringify(serverConfig.logger));
 		initializeLogger(serverConfig);
+
 		logger.info('Applying preprocessors');
 		initPreProcessors(app, serverConfig);
 
@@ -72,18 +61,6 @@ const NodeRestServer = (routeConfig, serverConfig = {}) => {
 		});
 
 		ErrorHandler.registerDevHandler(app);
-
-		logger.info('Try to start ' + hasPhusionPassenger ? 'passenger' : 'port');
-
-		if (hasPhusionPassenger) {
-			app.listen('passenger', () => {
-				logger.info('Server started listening on passenger');
-			});
-		} else {
-			app.listen(app.get('port'), () => {
-				logger.info('Server started listening on port', app.get('port'));
-			});
-		}
 	} catch (error) {
 		logger.error(error);
 	}
