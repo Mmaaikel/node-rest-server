@@ -26,23 +26,23 @@ const sendResponse = (routeConfig, responseData, response, serverConfig) => {
 	}
 };
 
-const handleControllerResponse = (routeConfig, request, response, controllerOptions) => {
+const handleControllerResponse = (routeConfig, controllerOptions, request, response, next) => {
 	if (typeof routeConfig.controller === 'function') {
 		const requestData = { ...getRequestData(request), ...getFilterData(response) };
-		return routeConfig.controller(requestData, controllerOptions, { request, response });
+		return routeConfig.controller(requestData, controllerOptions, request, response, next);
 	} else if (typeof routeConfig.controller === 'object') {
 		return routeConfig.controller;
 	}
 	return;
 };
 
-export default (routeConfig, controllerOptions, serverConfig) => (request, response) => {
+export default (routeConfig, controllerOptions, serverConfig) => (request, response, next) => {
 	try {
-		const responseData = handleControllerResponse(routeConfig, request, response, controllerOptions);
+		const responseData = handleControllerResponse(routeConfig, controllerOptions, request, response, next);
 		if (responseData instanceof Promise) {
 			responseData.then(
 				(data) => {
-					sendResponse(routeConfig, data, response, serverConfig);
+					sendResponse(routeConfig, data, response, next, serverConfig);
 				},
 				(error) => {
 					errorHandler(error);
