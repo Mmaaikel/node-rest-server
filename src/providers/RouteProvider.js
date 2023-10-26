@@ -29,7 +29,7 @@ const sendResponse = (routeConfig, responseData, response, serverConfig) => {
 const handleControllerResponse = (routeConfig, request, response, controllerOptions) => {
 	if (typeof routeConfig.controller === 'function') {
 		const requestData = { ...getRequestData(request), ...getFilterData(response) };
-		return routeConfig.controller(requestData, controllerOptions);
+		return routeConfig.controller(requestData, controllerOptions, { request, response });
 	} else if (typeof routeConfig.controller === 'object') {
 		return routeConfig.controller;
 	}
