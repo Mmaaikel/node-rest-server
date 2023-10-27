@@ -6,7 +6,14 @@ import { errorHandler } from '../utils/ErrorUtils';
 import * as fs from 'fs';
 
 const publishResponse = (response, status, data) => {
-	if ('filePath' in data) {
+	let hasFilePath = false;
+	try {
+		if (data && typeof data === 'object') {
+			hasFilePath = 'filePath' in data;
+		}
+	} catch (e) {}
+
+	if (hasFilePath) {
 		if (fs.existsSync(data.filePath)) {
 			response.sendFile(data.filePath);
 		} else {
