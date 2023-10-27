@@ -1,6 +1,6 @@
-# node-rest-server
+# node-rest-server-2
 
-[![NPM](https://nodei.co/npm/node-rest-server.png)](https://nodei.co/npm/node-rest-server/)
+[![NPM](https://nodei.co/npm/node-rest-server-2.png)](https://nodei.co/npm/node-rest-server/)
 
 Configuration only node rest server
 
@@ -26,17 +26,17 @@ Do you use for anything else!
 This is a [Node.js](https://nodejs.org/en/) module available through the [npm registry](https://www.npmjs.com/package/node-rest-server). Install using below command.
 
 ```bash
-npm install --save node-rest-server
+npm install --save node-rest-server-2
 ```
 
 ## Importing
 
 ```js
-import NodeRestServer from 'node-rest-server'; // ES6
+import NodeRestServer from 'node-rest-server-2'; // ES6
 // or
-const NodeRestServer = require('node-rest-server'); // ES5
+const NodeRestServer = require('node-rest-server-2'); // ES5
 // or
-import { NodeRestServer } from 'node-rest-server'; // If you like to use named export
+import { NodeRestServer } from 'node-rest-server-2'; // If you like to use named export
 
 // call it as function and pass configuration
 NodeRestServer(routeConfig, serverConfig);
@@ -45,7 +45,7 @@ NodeRestServer(routeConfig, serverConfig);
 ## Usage Example
 
 ```js
-import NodeRestServer from 'node-rest-server';
+import NodeRestServer from 'node-rest-server-2';
 
 const routeConfig = {
 	'/api1': {
@@ -135,7 +135,13 @@ const routeConfig = {
 			// Some DB/api calls
 			return { status: 200, payload: { data: 'Async data' } };
 		},
-	},
+	}, 
+	'/image': {
+		method: 'GET',
+		controller: async (requestData) => {
+			return { status: 200, filePath: 'path/to/image' };
+		}
+	}
 };
 ```
 

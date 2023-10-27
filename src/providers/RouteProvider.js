@@ -3,14 +3,23 @@ import { GLOBAL_API_ERROR } from '../constants/global';
 import { getRequestData, getFilterData } from '../handlers/RequestHandler';
 import ResponseHandler from '../handlers/ResponseHandler';
 import { errorHandler } from '../utils/ErrorUtils';
+import * as fs from 'fs';
 
 const publishResponse = (response, status, data) => {
-	if (status && data && Object.keys(data).length !== 0) {
-		response.status(status).json(data);
-	} else if (status && (!data || Object.keys(data).length === 0)) {
-		response.status(status).end();
+	if ('filePath' in data) {
+		if (fs.existsSync(data.filePath)) {
+			response.sendFile(data.filePath);
+		} else {
+			response.end();
+		}
 	} else {
-		response.end();
+		if (status && data && Object.keys(data).length !== 0) {
+			response.status(status).json(data);
+		} else if (status && (!data || Object.keys(data).length === 0)) {
+			response.status(status).end();
+		} else {
+			response.end();
+		}
 	}
 };
 
