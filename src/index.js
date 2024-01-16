@@ -63,6 +63,10 @@ const NodeRestServer = async (app, routeConfig, serverConfig = {}) => {
 		ErrorHandler.registerDevHandler(app);
 	} catch (error) {
 		logger.error(error);
+
+		if (typeof serverConfig.onError !== 'undefined') {
+			serverConfig.onError(error);
+		}
 	}
 };
 

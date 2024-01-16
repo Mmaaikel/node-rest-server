@@ -37,6 +37,7 @@ export default {
 			],
 			default: true,
 		},
+		onError: { type: 'function', optional: true },
 		filter: { type: 'function', optional: true },
 		cors: { type: 'any', optional: true },
 		middlewares: { type: 'array', optional: true },
