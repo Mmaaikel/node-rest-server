@@ -60,7 +60,7 @@ NodeRestServer(routeConfig);
 
 ## Sample
 
-[example](https://github.com/nishant-labs/node-rest-server/tree/master/examples) directory provides a sample application explaining the use of this library.
+[example](https://github.com/Mmaaikel/node-rest-server/tree/master/examples) directory provides a sample application explaining the use of this library.
 
 ## Route Configuration
 
@@ -141,7 +141,15 @@ const routeConfig = {
 		controller: async (requestData) => {
 			return { status: 200, filePath: 'path/to/image' };
 		}
-	}
+	},
+    '/custom_response': {
+	    method: 'GET',
+	    status: 200,
+	    customResponse: true,
+	    controller: async ({ res }) => {
+		    res.render( 'my_custom_render' );
+        }
+    }
 };
 ```
 

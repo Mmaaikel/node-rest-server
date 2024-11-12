@@ -13,32 +13,56 @@ const publishResponse = (response, status, data) => {
 		}
 	} catch (e) {}
 
+	// If there is a file, return that
 	if (hasFilePath) {
 		if (fs.existsSync(data.filePath)) {
 			response.sendFile(data.filePath);
 		} else {
 			response.end();
 		}
-	} else {
-		if (status && data && Object.keys(data).length !== 0) {
-			response.status(status).json(data);
-		} else if (status && (!data || Object.keys(data).length === 0)) {
-			response.status(status).end();
-		} else {
-			response.end();
-		}
+
+		return;
 	}
+
+	// If there is a status and data, return that
+	// JSON when required
+	if (status && data && Object.keys(data).length !== 0) {
+		response.status(status).json(data);
+	} else if (status && (!data || Object.keys(data).length === 0)) {
+		response.status(status).end();
+	} else {
+		response.end();
+	}
+};
+
+/**
+ * Custom publish will NOT end the response. This will allow you to use the response object to send custom data.
+ * @param response
+ * @param status
+ * @param data
+ */
+const publishCustom = (response, status, data) => {
+	response.status(status);
 };
 
 const sendResponse = (routeConfig, responseData, response, serverConfig) => {
 	const { status, data } = ResponseHandler.getResponseData(routeConfig, responseData, serverConfig);
 	logger.info('Response sent : ', JSON.stringify(data));
+
+	const publish = () => {
+		if (routeConfig?.customResponse === true) {
+			publishCustom(response, status, data);
+		} else {
+			publishResponse(response, status, data);
+		}
+	};
+
 	if (serverConfig.delay > 0) {
 		setTimeout(() => {
-			publishResponse(response, status, data);
+			publish(response, status, data);
 		}, serverConfig.delay * 1000);
 	} else {
-		publishResponse(response, status, data);
+		publish(response, status, data);
 	}
 };
 
