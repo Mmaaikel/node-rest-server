@@ -7,9 +7,12 @@ import * as fs from 'fs';
 
 const publishResponse = (response, status, data) => {
 	let hasFilePath = false;
+	let hasHtml = false;
+
 	try {
 		if (data && typeof data === 'object') {
 			hasFilePath = 'filePath' in data;
+			hasHtml = 'html' in data;
 		}
 	} catch (e) {}
 
@@ -21,6 +24,13 @@ const publishResponse = (response, status, data) => {
 			response.end();
 		}
 
+		return;
+	}
+
+	// If there is HTML, return that
+	if (hasHtml) {
+		response.setHeader('Content-Type', 'text/html');
+		response.send(data.html);
 		return;
 	}
 
