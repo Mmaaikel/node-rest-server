@@ -12,7 +12,7 @@ const publishResponse = (response, status, data) => {
 	try {
 		if (data && typeof data === 'object') {
 			hasFilePath = 'filePath' in data;
-			hasHtml = 'html' in data;
+			hasHtml = 'html' in data && 'isHtml' in data && data.isHtml === true;
 		}
 	} catch (e) {}
 
